@@ -10,7 +10,7 @@ import UIKit
 class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var weatherTableView: UITableView!
-    var daysArray = [DayEntity]()
+    var daysArray = [HourEntity]()
     let cellReuseIdentifier = "DayTableViewCell"
 
     override func viewDidLoad() {
@@ -41,9 +41,19 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
 
             if let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                 if let currentDict = dict["current"] as? [String: Any] {
-                    let day = DayEntity.init(currentDict)
+                    let day = HourEntity.init(currentDict)
                     self.daysArray.append(day)
                 }
+                
+                var arr = [HourEntity]()
+                if let hourlyArr = dict["hourly"] as? [[String: Any]] {
+                    for dayDict in hourlyArr {
+                        let day = HourEntity.init(dayDict)
+                        arr.append(day)
+//                        self.daysArray.append(day)
+                    }
+                }
+                print(arr)
             }
             
             DispatchQueue.main.async {

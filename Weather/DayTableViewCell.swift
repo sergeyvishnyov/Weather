@@ -24,7 +24,7 @@ class DayTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func set(_ day: DayEntity) {
+    func set(_ day: HourEntity) {
 //        dayNameLabel.text = day.dayName
     }
     
