@@ -15,8 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.makeKeyAndVisible()
-        let vc = WeatherViewController(nibName: "WeatherViewController", bundle: nil)
+        let vc = WeatherViewController.loadFromNib()
         let nav = UINavigationController.init(rootViewController: vc)
+        nav.isNavigationBarHidden = true
         self.window?.rootViewController = nav
         return true
     }

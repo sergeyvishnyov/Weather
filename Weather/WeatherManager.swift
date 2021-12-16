@@ -10,21 +10,23 @@ import CoreLocation
 
 class WeatherManager: NSObject, CLLocationManagerDelegate {
     static let sharedInstance = WeatherManager()
-//    let weatherViewController = WeatherViewController()
+    var weatherViewController: WeatherViewController? = nil
     
     let locationManager = CLLocationManager()
     var location: CLLocation!
-    var placemark: CLPlacemark?
     
     private var urlStr = "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&lang=ru&units=metric&exclude=minutely"
         
 // MARK: - Location Methods
-    func initLocationManager() {
+    func initLocationManager(_ vc: WeatherViewController) {
+        weatherViewController = vc
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
+        } else {
+            print("Location is not available")
         }
     }
 
@@ -46,14 +48,16 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
     
 // MARK: - Location Delegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let latitude: CLLocationDegrees = (locationManager.location?.coordinate.latitude)!
-        let longitude: CLLocationDegrees = (locationManager.location?.coordinate.longitude)!
-        let location = CLLocation(latitude: latitude,
-                                  longitude: longitude)
-        self.location = location
-        print("locations = \(latitude) \(longitude)")
-        locationManager.stopUpdatingLocation()
-        getCity()
+        if self.location == nil {
+            let latitude = locationManager.location?.coordinate.latitude
+            let longitude = locationManager.location?.coordinate.longitude
+            let location = CLLocation(latitude: latitude!,
+                                      longitude: longitude!)
+            print("locations = \(latitude) \(longitude)")
+            self.location = location
+            locationManager.stopUpdatingLocation()
+            weatherViewController?.loadData()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -90,36 +94,42 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
     }
     
 // MARK: - API
-    func getCity() {
+    func loadCity(success: @escaping(_ placemark: CLPlacemark?) -> (),
+                  failed: @escaping(_ error: Error?) -> ()) {
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
-            if error != nil {
-                return
-            }
-            if let placemark = placemarks?.first {
-                self.placemark = placemark
+            if error == nil {
+                var placemark: CLPlacemark?
+                if let placemarkFirst = placemarks?.first {
+                    placemark = placemarkFirst
+                }
+                success(placemark)
+            } else {
+                failed(error)
             }
         })
     }
     
-     func loadData(success: @escaping(_ current: HourEntity?, _ hours: [HourEntity]?, _ days: [DayEntity]?) -> (),
-                   failed: @escaping(_ error: Error?) -> ()) {
-         let lat = "&lat=\(location.coordinate.latitude)"
-         let lon = "&lon=\(location.coordinate.longitude)"
-         urlStr = urlStr + lat + lon
-         let url = URL(string: urlStr)!
+    func loadWeather(success: @escaping(_ current: HourEntity?, _ hours: [HourEntity], _ days: [DayEntity]) -> (),
+                   failed: @escaping(_ error: Any?) -> ()) {
+        let lat = "&lat=\(location.coordinate.latitude)"
+        let lon = "&lon=\(location.coordinate.longitude)"
+        urlStr = urlStr + lat + lon
+        let url = URL(string: urlStr)!
          
-//  For Example:         "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&lat=53.893009&lon=27.567444&lang=ru&units=metric&exclude=minutely")!
-         
-         URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
-             if let error = error {
-                 print(error.localizedDescription)
-                 failed(error)
-             }
-             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                 print(response as Any)
-                 return
-             }
-             guard let data = data else { return }
+        URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                failed(error)
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                failed(response)
+                return
+            }
+            guard let data = data else {
+                failed(nil)
+                return
+            }
 
              if let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                  var currentHour: HourEntity?
@@ -144,11 +154,10 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
                  }
                  
                  success(currentHour, hours, days)
+             } else {
+                 failed(nil)
              }
-             
- //            DispatchQueue.main.async {
- //                weatherViewController.weatherTableView.reloadData()
- //            }
          }).resume()
     }
 }
+

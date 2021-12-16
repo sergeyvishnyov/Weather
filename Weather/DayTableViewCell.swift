@@ -24,8 +24,19 @@ class DayTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func set(_ day: HourEntity) {
-//        dayNameLabel.text = day.dayName
+    func set(_ day: DayEntity) {
+        dayNameLabel.text = day.dayWeek
+        dayTemeratureMaxLabel.text = day.tempNight?.toString()
+        dayTemeratureMinLabel.text = day.tempNight?.toString()
+        
+        dayImageView.image = nil
+        guard let url = day.weather?.iconUrl else { return }
+        DispatchQueue.global().async {
+            let data = try? Data(contentsOf: url)
+            DispatchQueue.main.async {
+                self.dayImageView.image = UIImage(data: data!)
+            }
+        }
     }
     
 }

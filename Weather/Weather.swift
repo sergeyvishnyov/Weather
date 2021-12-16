@@ -10,13 +10,13 @@ import Foundation
 // https://openweathermap.org/api/one-call-api — Documentation
 
 class WeatherEntity: NSObject {
-    var weatherId: Float? // Weather condition id
+    var weatherId: Double? // Weather condition id
     var main: String? // Group of weather parameters (Rain, Snow, Extreme etc.)
     var weatherDescription: String? // Weather condition within the group
     var iconUrl: URL? // Weather icon id // https://openweathermap.org/weather-conditions#How-to-get-icon-URL
 
     init(_ dict: [String: Any]) {
-        weatherId = dict["id"] as? Float
+        weatherId = dict["id"] as? Double
         main = dict["main"] as? String
         weatherDescription = dict["description"] as? String
         if let icon = dict["icon"] as? String {

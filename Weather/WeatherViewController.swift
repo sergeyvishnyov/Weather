@@ -6,89 +6,91 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+    
+    @IBOutlet var currentView: UIView!
+    @IBOutlet var cityLabel: UILabel!
+    @IBOutlet var weatherLabel: UILabel!
+    @IBOutlet var temperatureLabel: UILabel!
 
     @IBOutlet var weatherTableView: UITableView!
-    var daysArray = [HourEntity]()
     let cellReuseIdentifier = "DayTableViewCell"
 
+    var current: HourEntity?
+    var hours: [HourEntity]?
+    var days = [DayEntity]()
+    
+    var placemark: CLPlacemark?
+
+    let manager: WeatherManager! = WeatherManager.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         weatherTableView.register(UINib(nibName: cellReuseIdentifier, bundle: nil),
                                   forCellReuseIdentifier: cellReuseIdentifier)
-        
-        WeatherManager.sharedInstance.initLocationManager()
-        
-        WeatherManager.sharedInstance.loadData { current, hours, days in
-            print(current, hours, days)
-        } failed: { error in
-            //
-        }
+        weatherTableView.isHidden = true
+        currentView.isHidden = true
 
+        manager.initLocationManager(self)
     }
     
-//    @objc override func handleRefresh(_ refreshControl: UIRefreshControl) {
-//        loadData()
-//    }
+    func loadData() {
+        let group = DispatchGroup()
 
-//    func loadData() {
-//        let url = URL(string: "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&lat=53.893009&lon=27.567444&lang=ru&units=metric&exclude=minutely")!
-//        URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
-//            if let error = error {
-//                print(error.localizedDescription)
-//                return
-//            }
-//            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-//                print(response as Any)
-//                return
-//            }
-//            guard let data = data else { return }
-//
-//            if let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-//                if let currentDict = dict["current"] as? [String: Any] {
-//                    let day = HourEntity.init(currentDict)
-//                    self.daysArray.append(day)
-//                }
-//                
-//                var arr = [HourEntity]()
-//                if let hourlyArr = dict["hourly"] as? [[String: Any]] {
-//                    for dayDict in hourlyArr {
-//                        let day = HourEntity.init(dayDict)
-//                        arr.append(day)
-////                        self.daysArray.append(day)
-//                    }
-//                }
-//                print(arr)
-//            }
-//            
-//            DispatchQueue.main.async {
-//                self.weatherTableView.reloadData()
-//            }
-////            guard let list = dictionaryObj["list"] as? [[String: Any]] else {
-////
-////                return
-////            }
-////
-////            if let first = list.first, let wind = first["wind"] {
-////                print(wind)
-////            }
-//        }).resume()
-//    }
+        group.enter()
+        manager.loadCity { placemark in
+            self.placemark = placemark
+            group.leave()
+        } failed: { error in
+            group.leave()
+        }
+        
+        group.enter()
+        manager.loadWeather { current, hours, days in
+//            print(current, hours, days)
+            self.current = current
+            self.hours = hours
+            self.days = days
+            group.leave()
+        } failed: { error in
+            group.leave()
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            DispatchQueue.main.async {
+                self.updateUI()
+            }
+        }
+    }
     
-// MARK: - UITableView Delegate
+    func updateUI () {
+        activityIndicatorView.stopAnimating()
+        
+        currentView.isHidden = false
+        cityLabel.text = placemark?.name
+        weatherLabel.text = current?.weather?.weatherDescription
+        temperatureLabel.text = current?.temp?.toString()
+
+        weatherTableView.isHidden = false
+        weatherTableView.reloadData()
+    }
+    
+//  MARK: - UITableView Delegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return daysArray.count
+        return days.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! DayTableViewCell
-        let day = daysArray[indexPath.row]
+        let day = days[indexPath.row]
         cell.set(day)
         return cell
     }
