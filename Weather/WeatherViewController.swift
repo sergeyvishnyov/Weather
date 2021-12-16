@@ -19,56 +19,63 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         weatherTableView.register(UINib(nibName: cellReuseIdentifier, bundle: nil),
                                   forCellReuseIdentifier: cellReuseIdentifier)
         
-        loadData()
+        WeatherManager.sharedInstance.initLocationManager()
+        
+        WeatherManager.sharedInstance.loadData { current, hours, days in
+            print(current, hours, days)
+        } failed: { error in
+            //
+        }
+
     }
     
 //    @objc override func handleRefresh(_ refreshControl: UIRefreshControl) {
 //        loadData()
 //    }
 
-    func loadData() {
-        let url = URL(string: "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&lat=53.893009&lon=27.567444&lang=ru&units=metric&exclude=minutely")!
-        URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                print(response as Any)
-                return
-            }
-            guard let data = data else { return }
-
-            if let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                if let currentDict = dict["current"] as? [String: Any] {
-                    let day = HourEntity.init(currentDict)
-                    self.daysArray.append(day)
-                }
-                
-                var arr = [HourEntity]()
-                if let hourlyArr = dict["hourly"] as? [[String: Any]] {
-                    for dayDict in hourlyArr {
-                        let day = HourEntity.init(dayDict)
-                        arr.append(day)
-//                        self.daysArray.append(day)
-                    }
-                }
-                print(arr)
-            }
-            
-            DispatchQueue.main.async {
-                self.weatherTableView.reloadData()
-            }
-//            guard let list = dictionaryObj["list"] as? [[String: Any]] else {
-//
+//    func loadData() {
+//        let url = URL(string: "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&lat=53.893009&lon=27.567444&lang=ru&units=metric&exclude=minutely")!
+//        URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
+//            if let error = error {
+//                print(error.localizedDescription)
 //                return
 //            }
-//
-//            if let first = list.first, let wind = first["wind"] {
-//                print(wind)
+//            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+//                print(response as Any)
+//                return
 //            }
-        }).resume()
-    }
+//            guard let data = data else { return }
+//
+//            if let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+//                if let currentDict = dict["current"] as? [String: Any] {
+//                    let day = HourEntity.init(currentDict)
+//                    self.daysArray.append(day)
+//                }
+//                
+//                var arr = [HourEntity]()
+//                if let hourlyArr = dict["hourly"] as? [[String: Any]] {
+//                    for dayDict in hourlyArr {
+//                        let day = HourEntity.init(dayDict)
+//                        arr.append(day)
+////                        self.daysArray.append(day)
+//                    }
+//                }
+//                print(arr)
+//            }
+//            
+//            DispatchQueue.main.async {
+//                self.weatherTableView.reloadData()
+//            }
+////            guard let list = dictionaryObj["list"] as? [[String: Any]] else {
+////
+////                return
+////            }
+////
+////            if let first = list.first, let wind = first["wind"] {
+////                print(wind)
+////            }
+//        }).resume()
+//    }
     
 // MARK: - UITableView Delegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

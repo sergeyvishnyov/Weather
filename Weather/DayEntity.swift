@@ -19,22 +19,14 @@ class DayEntity: NSObject {
     
     init(_ dict: [String: Any]) {
         dt = dict["dt"] as? Int
-        
         tempDay = dict["day"] as? Float
         tempNight = dict["night"] as? Float
         tempMax = dict["max"] as? Float
         tempMin = dict["min"] as? Float
-
         if let weatherArr = dict["weather"] as? [[String: Any]] {
-            // проверить на nil
             if let weatherDict = weatherArr.first {
                 weather = WeatherEntity.init(weatherDict)
             }
-//            if weatherArr.count > 0 {
-//                if let weatherDict = weatherArr.first {
-//                    weather = WeatherEntity.init(weatherDict)
-//                }
-//            }
         }
     }
 }
