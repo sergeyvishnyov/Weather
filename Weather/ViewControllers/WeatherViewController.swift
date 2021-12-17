@@ -21,8 +21,10 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var temperatureLabel: UILabel!
 
     @IBOutlet var tableView: UITableView!
-    var tableViewCellDayHeight = 30.0
-    let cellReuseIdentifier = "DayTableViewCell"
+    var tableViewCellDayHeight = 40.0
+    let cellReuseIdentifierDay = "DayTableViewCell"
+    let cellReuseIdentifierCurrent = "CurrentTableViewCell"
+    let cellReuseIdentifierHour = "HourCollectionViewCell"
 
     var current: HourEntity?
     var hours = [HourEntity]()
@@ -35,8 +37,8 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UINib(nibName: cellReuseIdentifier, bundle: nil),
-                                  forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.register(UINib(nibName: cellReuseIdentifierDay, bundle: nil),
+                                  forCellReuseIdentifier: cellReuseIdentifierDay)
         tableView.isHidden = true
         currentView.isHidden = true
 
@@ -59,7 +61,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
 //            print(current, hours, days)
             self.current = current
             self.hours = hours
-            self.days = days + days + days
+            self.days = days
             group.leave()
         } failed: { error in
             group.leave()
@@ -89,12 +91,8 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         let hoursCollectionView = Bundle.main.loadNibNamed("HoursCollectionView",
                                                        owner: nil,
                                                        options: nil)?.first as! HoursCollectionView
-        hoursCollectionView.register(UINib(nibName: "HourCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HourCollectionViewCell")
-
-        hoursCollectionView.delegate = hoursCollectionView
-        hoursCollectionView.dataSource = hoursCollectionView
+        hoursCollectionView.register(UINib(nibName: cellReuseIdentifierHour, bundle: nil), forCellWithReuseIdentifier: cellReuseIdentifierHour)
         hoursCollectionView.hours = hours
-        hoursCollectionView.backgroundColor = view.backgroundColor
         hoursCollectionView.alpha = section == 0 ? 0 : 1
         return hoursCollectionView
     }
@@ -112,7 +110,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! DayTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifierDay) as! DayTableViewCell
         let day = days[indexPath.row]
         cell.set(day)
         return cell

@@ -14,6 +14,8 @@
 		A5127B19276A30B2006806DE /* WeatherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5127B18276A30B2006806DE /* WeatherViewController.xib */; };
 		A5127B1B276A31C0006806DE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5127B1A276A31BF006806DE /* Extensions.swift */; };
 		A5127B21276A58A2006806DE /* HourEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5127B20276A58A2006806DE /* HourEntity.swift */; };
+		A5A7B48A276CB50000252496 /* CurrentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A7B488276CB50000252496 /* CurrentTableViewCell.swift */; };
+		A5A7B48B276CB50000252496 /* CurrentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5A7B489276CB50000252496 /* CurrentTableViewCell.xib */; };
 		A5E80AFA276B439600975C1B /* DayEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80AF9276B439600975C1B /* DayEntity.swift */; };
 		A5E80AFC276B43AB00975C1B /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80AFB276B43AB00975C1B /* Weather.swift */; };
 		A5E80B00276B503A00975C1B /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80AFF276B503A00975C1B /* WeatherManager.swift */; };
@@ -35,6 +37,8 @@
 		A5127B18276A30B2006806DE /* WeatherViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WeatherViewController.xib; sourceTree = "<group>"; };
 		A5127B1A276A31BF006806DE /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A5127B20276A58A2006806DE /* HourEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourEntity.swift; sourceTree = "<group>"; };
+		A5A7B488276CB50000252496 /* CurrentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTableViewCell.swift; sourceTree = "<group>"; };
+		A5A7B489276CB50000252496 /* CurrentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrentTableViewCell.xib; sourceTree = "<group>"; };
 		A5E80AF9276B439600975C1B /* DayEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayEntity.swift; sourceTree = "<group>"; };
 		A5E80AFB276B43AB00975C1B /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		A5E80AFF276B503A00975C1B /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 			children = (
 				A5E80B42276BB39600975C1B /* DayTableViewCell.swift */,
 				A5E80B41276BB39600975C1B /* DayTableViewCell.xib */,
+				A5A7B488276CB50000252496 /* CurrentTableViewCell.swift */,
+				A5A7B489276CB50000252496 /* CurrentTableViewCell.xib */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -193,6 +199,7 @@
 				A5E80B49276C6A8D00975C1B /* HoursCollectionView.xib in Resources */,
 				A5E80B43276BB39700975C1B /* DayTableViewCell.xib in Resources */,
 				A5E80B4D276C6CEA00975C1B /* HourCollectionViewCell.xib in Resources */,
+				A5A7B48B276CB50000252496 /* CurrentTableViewCell.xib in Resources */,
 				A5127B0E276A2ED3006806DE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,6 +221,7 @@
 				A5E80B00276B503A00975C1B /* WeatherManager.swift in Sources */,
 				A5127B05276A2ED0006806DE /* AppDelegate.swift in Sources */,
 				A5E80AFC276B43AB00975C1B /* Weather.swift in Sources */,
+				A5A7B48A276CB50000252496 /* CurrentTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

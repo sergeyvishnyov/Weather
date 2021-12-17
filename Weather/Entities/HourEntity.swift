@@ -43,7 +43,7 @@ class HourEntity: NSObject {
         wind_speed = dict["wind_speed"] as? Double
         wind_deg = dict["wind_deg"] as? Double
         wind_gust = dict["wind_gust"] as? Double
-        wind_gust = dict["pop"] as? Double
+        pop = dict["pop"] as? Double
         if let weatherArr = dict["weather"] as? [[String: Any]] {
             if let weatherDict = weatherArr.first {
                 weather = WeatherEntity.init(weatherDict)

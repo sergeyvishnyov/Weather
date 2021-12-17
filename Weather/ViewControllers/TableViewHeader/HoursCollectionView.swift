@@ -20,6 +20,9 @@ class HoursCollectionView: UICollectionView, UICollectionViewDelegate, UICollect
         cgContext?.setStrokeColor(UIColor.groupTableViewBackground.cgColor)
         cgContext?.setLineWidth(1.0)
         cgContext?.strokePath()
+        
+        delegate = self
+        dataSource = self
     }
     
     // MARK: - UICollectionViewDataSource delegate
@@ -39,7 +42,7 @@ class HoursCollectionView: UICollectionView, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: 100)
+        return CGSize(width: 50, height: 220)
     }
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -55,9 +58,7 @@ class HoursCollectionView: UICollectionView, UICollectionViewDelegate, UICollect
 //    }
 
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let vc = ProductViewController.loadFromNib()
-//        vc.product = dataArray[indexPath.item]
-//        navigationController!.pushViewController(vc, animated: true)
+//
 //    }
 
 }

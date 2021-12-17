@@ -15,7 +15,7 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
     var location: CLLocation!
     
-    private var urlStr = "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&lang=ru&units=metric&exclude=minutely"
+    private var urlStr = "http://api.openweathermap.org/data/2.5/onecall?appid=e4b636bde533ce124b0334332e698026&units=metric&exclude=minutely"
         
 // MARK: - Location Methods
     func initLocationManager(_ vc: WeatherViewController) {
@@ -96,7 +96,9 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
 // MARK: - API
     func getCity(success: @escaping(_ placemark: CLPlacemark?) -> (),
                   failed: @escaping(_ error: Error?) -> ()) {
-        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+        CLGeocoder().reverseGeocodeLocation(location,
+                                            preferredLocale: Locale(identifier: "en_US"),
+                                            completionHandler: {(placemarks, error) -> Void in
             if error == nil {
                 var placemark: CLPlacemark?
                 if let placemarkFirst = placemarks?.first {

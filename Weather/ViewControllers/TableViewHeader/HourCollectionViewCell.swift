@@ -9,6 +9,7 @@ import UIKit
 
 class HourCollectionViewCell: UICollectionViewCell {
     @IBOutlet var hourLabel: UILabel!
+    @IBOutlet var hourPopLabel: UILabel!
     @IBOutlet var hourImageView: UIImageView!
     @IBOutlet var hourTemeratureLabel: UILabel!
 
@@ -19,6 +20,10 @@ class HourCollectionViewCell: UICollectionViewCell {
 
     func set(_ hour: HourEntity) {
         hourLabel.text = hour.dt?.toHour()
+        if let pop = hour.pop {
+            hourPopLabel.isHidden = pop == 0
+            hourPopLabel.text = (pop * 100).toString().appending(" %")
+        }
         hourTemeratureLabel.text = hour.temp?.toString().appending("˚")
         
         guard let url = hour.weather?.iconUrl else { return }
