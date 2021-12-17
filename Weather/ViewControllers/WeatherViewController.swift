@@ -12,15 +12,20 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     
     @IBOutlet var currentView: UIView!
+    @IBOutlet var currentViewHeight: NSLayoutConstraint!
     @IBOutlet var cityLabel: UILabel!
     @IBOutlet var weatherLabel: UILabel!
+
+    @IBOutlet var temperatureView: UIView!
+    @IBOutlet var temperatureViewHeight: NSLayoutConstraint!
     @IBOutlet var temperatureLabel: UILabel!
 
-    @IBOutlet var weatherTableView: UITableView!
+    @IBOutlet var tableView: UITableView!
+    var tableViewCellDayHeight = 30.0
     let cellReuseIdentifier = "DayTableViewCell"
 
     var current: HourEntity?
-    var hours: [HourEntity]?
+    var hours = [HourEntity]()
     var days = [DayEntity]()
     
     var placemark: CLPlacemark?
@@ -30,9 +35,9 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        weatherTableView.register(UINib(nibName: cellReuseIdentifier, bundle: nil),
+        tableView.register(UINib(nibName: cellReuseIdentifier, bundle: nil),
                                   forCellReuseIdentifier: cellReuseIdentifier)
-        weatherTableView.isHidden = true
+        tableView.isHidden = true
         currentView.isHidden = true
 
         manager.initLocationManager(self)
@@ -42,7 +47,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         let group = DispatchGroup()
 
         group.enter()
-        manager.loadCity { placemark in
+        manager.getCity { placemark in
             self.placemark = placemark
             group.leave()
         } failed: { error in
@@ -50,11 +55,11 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         group.enter()
-        manager.loadWeather { current, hours, days in
+        manager.getWeather { current, hours, days in
 //            print(current, hours, days)
             self.current = current
             self.hours = hours
-            self.days = days
+            self.days = days + days + days
             group.leave()
         } failed: { error in
             group.leave()
@@ -71,21 +76,39 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         activityIndicatorView.stopAnimating()
         
         currentView.isHidden = false
-        cityLabel.text = placemark?.name
+        cityLabel.text = placemark?.locality ?? placemark?.name
         weatherLabel.text = current?.weather?.weatherDescription
         temperatureLabel.text = current?.temp?.toString()
 
-        weatherTableView.isHidden = false
-        weatherTableView.reloadData()
+        tableView.isHidden = false
+        tableView.reloadData()
     }
     
 //  MARK: - UITableView Delegate
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let hoursCollectionView = Bundle.main.loadNibNamed("HoursCollectionView",
+                                                       owner: nil,
+                                                       options: nil)?.first as! HoursCollectionView
+        hoursCollectionView.register(UINib(nibName: "HourCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "HourCollectionViewCell")
+
+        hoursCollectionView.delegate = hoursCollectionView
+        hoursCollectionView.dataSource = hoursCollectionView
+        hoursCollectionView.hours = hours
+        hoursCollectionView.backgroundColor = view.backgroundColor
+        hoursCollectionView.alpha = section == 0 ? 0 : 1
+        return hoursCollectionView
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+        return tableViewCellDayHeight
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return days.count
+        return section == 0 ? (days.count > 0 ? 1 : 0) : days.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -97,6 +120,26 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+//        print(offsetY)
+
+        let indexpath = IndexPath(row: 0, section: 0)
+        if let currentCell = tableView.cellForRow(at: indexpath) as? DayTableViewCell {
+            if offsetY > 0 {
+                let height = tableViewCellDayHeight * 2
+                temperatureView.alpha = (height - offsetY) / height
+                let alpha = (tableViewCellDayHeight - offsetY) / tableViewCellDayHeight
+                currentCell.alpha = alpha
+            } else {
+                temperatureView.alpha = 1
+                currentCell.alpha = 1
+                
+                currentViewHeight.constant = 200 - offsetY
+            }
+        }
     }
 
 }

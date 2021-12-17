@@ -25,18 +25,13 @@ class DayTableViewCell: UITableViewCell {
     }
     
     func set(_ day: DayEntity) {
-        dayNameLabel.text = day.dayWeek
-        dayTemeratureMaxLabel.text = day.tempNight?.toString()
+//        dayNameLabel.text = day.dayWeek
+        dayNameLabel.text = day.dt?.toWeek()
+        dayTemeratureMaxLabel.text = day.tempDay?.toString()
         dayTemeratureMinLabel.text = day.tempNight?.toString()
         
-        dayImageView.image = nil
         guard let url = day.weather?.iconUrl else { return }
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            DispatchQueue.main.async {
-                self.dayImageView.image = UIImage(data: data!)
-            }
-        }
+        dayImageView.loadImageFrom(url)
     }
     
 }

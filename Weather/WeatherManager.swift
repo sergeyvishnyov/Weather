@@ -94,7 +94,7 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
     }
     
 // MARK: - API
-    func loadCity(success: @escaping(_ placemark: CLPlacemark?) -> (),
+    func getCity(success: @escaping(_ placemark: CLPlacemark?) -> (),
                   failed: @escaping(_ error: Error?) -> ()) {
         CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
             if error == nil {
@@ -109,7 +109,7 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
         })
     }
     
-    func loadWeather(success: @escaping(_ current: HourEntity?, _ hours: [HourEntity], _ days: [DayEntity]) -> (),
+    func getWeather(success: @escaping(_ current: HourEntity?, _ hours: [HourEntity], _ days: [DayEntity]) -> (),
                    failed: @escaping(_ error: Any?) -> ()) {
         let lat = "&lat=\(location.coordinate.latitude)"
         let lon = "&lon=\(location.coordinate.longitude)"

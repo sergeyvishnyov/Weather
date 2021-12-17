@@ -19,6 +19,10 @@
 		A5E80B00276B503A00975C1B /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80AFF276B503A00975C1B /* WeatherManager.swift */; };
 		A5E80B43276BB39700975C1B /* DayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5E80B41276BB39600975C1B /* DayTableViewCell.xib */; };
 		A5E80B44276BB39700975C1B /* DayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80B42276BB39600975C1B /* DayTableViewCell.swift */; };
+		A5E80B47276C6A7F00975C1B /* HoursCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80B46276C6A7F00975C1B /* HoursCollectionView.swift */; };
+		A5E80B49276C6A8D00975C1B /* HoursCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5E80B48276C6A8D00975C1B /* HoursCollectionView.xib */; };
+		A5E80B4C276C6CEA00975C1B /* HourCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E80B4A276C6CEA00975C1B /* HourCollectionViewCell.swift */; };
+		A5E80B4D276C6CEA00975C1B /* HourCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5E80B4B276C6CEA00975C1B /* HourCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +40,10 @@
 		A5E80AFF276B503A00975C1B /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		A5E80B41276BB39600975C1B /* DayTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DayTableViewCell.xib; sourceTree = "<group>"; };
 		A5E80B42276BB39600975C1B /* DayTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayTableViewCell.swift; sourceTree = "<group>"; };
+		A5E80B46276C6A7F00975C1B /* HoursCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoursCollectionView.swift; sourceTree = "<group>"; };
+		A5E80B48276C6A8D00975C1B /* HoursCollectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HoursCollectionView.xib; sourceTree = "<group>"; };
+		A5E80B4A276C6CEA00975C1B /* HourCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourCollectionViewCell.swift; sourceTree = "<group>"; };
+		A5E80B4B276C6CEA00975C1B /* HourCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HourCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +93,7 @@
 			children = (
 				A5127B08276A2ED0006806DE /* WeatherViewController.swift */,
 				A5127B18276A30B2006806DE /* WeatherViewController.xib */,
+				A5E80B45276C69D600975C1B /* TableViewHeader */,
 				A5E80B40276BB39600975C1B /* TableViewCells */,
 			);
 			path = ViewControllers;
@@ -108,6 +117,17 @@
 				A5E80B41276BB39600975C1B /* DayTableViewCell.xib */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		A5E80B45276C69D600975C1B /* TableViewHeader */ = {
+			isa = PBXGroup;
+			children = (
+				A5E80B46276C6A7F00975C1B /* HoursCollectionView.swift */,
+				A5E80B48276C6A8D00975C1B /* HoursCollectionView.xib */,
+				A5E80B4A276C6CEA00975C1B /* HourCollectionViewCell.swift */,
+				A5E80B4B276C6CEA00975C1B /* HourCollectionViewCell.xib */,
+			);
+			path = TableViewHeader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,7 +190,9 @@
 			files = (
 				A5127B11276A2ED3006806DE /* LaunchScreen.storyboard in Resources */,
 				A5127B19276A30B2006806DE /* WeatherViewController.xib in Resources */,
+				A5E80B49276C6A8D00975C1B /* HoursCollectionView.xib in Resources */,
 				A5E80B43276BB39700975C1B /* DayTableViewCell.xib in Resources */,
+				A5E80B4D276C6CEA00975C1B /* HourCollectionViewCell.xib in Resources */,
 				A5127B0E276A2ED3006806DE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,9 +204,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5E80B47276C6A7F00975C1B /* HoursCollectionView.swift in Sources */,
 				A5127B21276A58A2006806DE /* HourEntity.swift in Sources */,
 				A5E80AFA276B439600975C1B /* DayEntity.swift in Sources */,
 				A5E80B44276BB39700975C1B /* DayTableViewCell.swift in Sources */,
+				A5E80B4C276C6CEA00975C1B /* HourCollectionViewCell.swift in Sources */,
 				A5127B09276A2ED0006806DE /* WeatherViewController.swift in Sources */,
 				A5127B1B276A31C0006806DE /* Extensions.swift in Sources */,
 				A5E80B00276B503A00975C1B /* WeatherManager.swift in Sources */,

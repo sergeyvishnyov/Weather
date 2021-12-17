@@ -29,11 +29,7 @@ class HourEntity: NSObject {
     var weather: WeatherEntity? // Weather
 
     init(_ dict: [String: Any]) {
-        if let dt = dict["dt"] as? Double {
-            self.dt = dt
-            let date = Date(timeIntervalSince1970: dt)
-//            print(date)
-        }
+        dt = dict["dt"] as? Double
         sunrise = dict["sunrise"] as? Int
         sunset = dict["sunset"] as? Int
         temp = dict["temp"] as? Double

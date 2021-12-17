@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="gTV-IL-0wX" customClass="HourCollectionViewCell" customModule="Weather" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="100"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hour" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Chs-EU-a1D">
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="35"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rain" translatesAutoresizingMaskIntoConstraints="NO" id="yMA-40-Tjf">
+                        <rect key="frame" x="10" y="35" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="GBS-yw-DOE"/>
+                            <constraint firstAttribute="height" constant="30" id="Vlo-O2-n4s"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0˚" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2J6-Bj-iOi">
+                        <rect key="frame" x="0.0" y="65" width="50" height="35"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" systemColor="linkColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Chs-EU-a1D" secondAttribute="trailing" id="7MF-Ap-JB5"/>
+                <constraint firstAttribute="trailing" secondItem="2J6-Bj-iOi" secondAttribute="trailing" id="Bgq-Qa-QMc"/>
+                <constraint firstAttribute="bottom" secondItem="2J6-Bj-iOi" secondAttribute="bottom" id="MWc-lp-2DX"/>
+                <constraint firstItem="Chs-EU-a1D" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="N7D-pq-pS4"/>
+                <constraint firstItem="2J6-Bj-iOi" firstAttribute="top" secondItem="yMA-40-Tjf" secondAttribute="bottom" id="Vw2-ta-Kcp"/>
+                <constraint firstItem="yMA-40-Tjf" firstAttribute="top" secondItem="Chs-EU-a1D" secondAttribute="bottom" id="WLT-MJ-kUw"/>
+                <constraint firstItem="yMA-40-Tjf" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="bdf-i4-5HQ"/>
+                <constraint firstItem="Chs-EU-a1D" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="ja4-Ym-FO6"/>
+                <constraint firstItem="2J6-Bj-iOi" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="lnz-nB-UZo"/>
+                <constraint firstItem="yMA-40-Tjf" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="zkf-Eh-CtM"/>
+            </constraints>
+            <connections>
+                <outlet property="hourImageView" destination="yMA-40-Tjf" id="INB-I3-iPI"/>
+                <outlet property="hourLabel" destination="Chs-EU-a1D" id="8ao-Ou-sdP"/>
+                <outlet property="hourTemeratureLabel" destination="2J6-Bj-iOi" id="4Sy-Jw-qAD"/>
+            </connections>
+            <point key="canvasLocation" x="-36" y="13"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="rain" width="33.333332061767578" height="33.333332061767578"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
