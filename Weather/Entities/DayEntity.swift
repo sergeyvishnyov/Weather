@@ -15,6 +15,7 @@ class DayEntity: NSObject {
     var tempNight: Double?
 //    var tempMax: Double?
 //    var tempMin: Double?
+    var currentDay: Bool? = false
     var weather: WeatherEntity?
     
     init(_ dict: [String: Any]) {

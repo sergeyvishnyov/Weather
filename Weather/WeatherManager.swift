@@ -134,11 +134,6 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
             }
 
              if let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                 var currentHour: HourEntity?
-                 if let currentDict = dict["current"] as? [String: Any] {
-                     currentHour = HourEntity.init(currentDict)
-                 }
-                 
                  var hours = [HourEntity]()
                  if let hoursArr = dict["hourly"] as? [[String: Any]] {
                      for hourDict in hoursArr {
@@ -154,7 +149,17 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
                          days.append(day)
                      }
                  }
-                 
+
+                 var currentHour: HourEntity?
+                 if let currentDict = dict["current"] as? [String: Any] {
+                     currentHour = HourEntity.init(currentDict)
+                     if let hour = hours.first {
+                         // current ≈ hour, hour include Precipitation volume, mm
+                         currentHour?.rain = hour.rain
+                         currentHour?.snow = hour.snow
+                     }
+                 }
+
                  success(currentHour, hours, days)
              } else {
                  failed(nil)

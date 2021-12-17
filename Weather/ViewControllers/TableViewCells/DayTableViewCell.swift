@@ -15,7 +15,6 @@ class DayTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -25,13 +24,17 @@ class DayTableViewCell: UITableViewCell {
     }
     
     func set(_ day: DayEntity) {
-//        dayNameLabel.text = day.dayWeek
-        dayNameLabel.text = day.dt?.toWeek()
         dayTemeratureMaxLabel.text = day.tempDay?.toString()
         dayTemeratureMinLabel.text = day.tempNight?.toString()
         
-        guard let url = day.weather?.iconUrl else { return }
-        dayImageView.loadImageFrom(url)
+        if day.currentDay == false {
+            dayNameLabel.text = day.dt?.toWeek()
+            guard let url = day.weather?.iconUrl else { return }
+            dayImageView.loadImageFrom(url)
+            dayImageView.isHidden = false
+        } else {
+            dayNameLabel.text = day.dt?.toWeek().appending(" Today")
+            dayImageView.isHidden = true
+        }
     }
-    
 }

@@ -22,10 +22,9 @@ class HourCollectionViewCell: UICollectionViewCell {
         hourLabel.text = hour.dt?.toHour()
         if let pop = hour.pop {
             hourPopLabel.isHidden = pop == 0
-            hourPopLabel.text = (pop * 100).toString().appending(" %")
+            hourPopLabel.text = (pop * 100).toString().percent()
         }
-        hourTemeratureLabel.text = hour.temp?.toString().appending("˚")
-        
+        hourTemeratureLabel.text = hour.temp?.toString().celsius()
         guard let url = hour.weather?.iconUrl else { return }
         hourImageView.loadImageFrom(url)
     }

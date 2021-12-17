@@ -28,17 +28,21 @@ extension UIImageView {
     }
 }
 
-extension Int {
-    func toString() -> String {
-        return String(format: "%", self)
-    }
-}
+//extension Int {
+//    func toString() -> String {
+//        return String(format: "%", self)
+//    }
+//}
 
 extension Double {
     func toString() -> String {
-        return String(format: "%.0f", self)
+        return String(format: "%.f", self)
     }
-    
+
+    func toStringDecimal() -> String {
+        return String(format: "%.2f", self)
+    }
+
     func toWeek() -> String {
         let dateFormatter = DateFormatter();
         dateFormatter.locale = Locale(identifier: "en_US")
@@ -54,5 +58,50 @@ extension Double {
         }
         return dateFormatter.string(from: Date(timeIntervalSince1970: self))
     }
+
+    func toHourMinute() -> String {
+        let dateFormatter = DateFormatter();
+        dateFormatter.dateFormat = "h:mma"
+        return dateFormatter.string(from: Date(timeIntervalSince1970: self))
+    }
 }
+
+extension String {
+    func percent() -> String {
+        return self.appending("%")
+    }
+    
+    func celsius() -> String {
+        return self.appending("°")
+//        return self.appending("˚")
+    }
+}
+
+extension UIView {
+    var viewWidth: CGFloat {
+        return self.frame.size.width
+    }
+    var viewHeight: CGFloat {
+        return self.frame.size.height
+    }
+    var viewX: CGFloat {
+        return self.frame.origin.x
+    }
+    var viewY: CGFloat {
+        return self.frame.origin.y
+    }
+    func viewSet(x: CGFloat) {
+        self.frame = CGRect(x: x, y: self.viewY, width: self.viewWidth, height: self.viewHeight)
+    }
+    func viewSet(y: CGFloat) {
+        self.frame = CGRect(x: self.viewX, y: y, width: self.viewWidth, height: self.viewHeight)
+    }
+    func viewSet(widht: CGFloat) {
+        self.frame = CGRect(x: self.viewX, y: self.viewY, width: widht, height: self.viewHeight)
+    }
+    func viewSet(height: CGFloat) {
+        self.frame = CGRect(x: self.viewX, y: self.viewY, width: self.viewWidth, height: height)
+    }
+}
+
 

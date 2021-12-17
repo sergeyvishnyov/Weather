@@ -11,8 +11,8 @@ import Foundation
 
 class HourEntity: NSObject {
     var dt: Double? // Time of the forecasted data, Unix, UTC
-    var sunrise: Int? // Sunrise time, Unix, UTC
-    var sunset: Int? // Sunset time, Unix, UTC
+    var sunrise: Double? // Sunrise time, Unix, UTC
+    var sunset: Double? // Sunset time, Unix, UTC
     var temp: Double? // Temperature. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit
     var feels_like: Double? // Temperature. This accounts for the human perception of weather. Units – default: kelvin, metric: Celsius, imperial: Fahrenheit.
     var pressure: Double? // Atmospheric pressure on the sea level, hPa
@@ -25,13 +25,15 @@ class HourEntity: NSObject {
     var wind_deg: Double? // Wind direction, degrees (meteorological)
     var wind_gust: Double? // (where available) Wind gust. Units – default: metre/sec, metric: metre/sec, imperial: miles/hour.
     var pop: Double? // Probability of precipitation
+    var rain: Double? // Probability of precipitation
+    var snow: Double? // Probability of precipitation
 
     var weather: WeatherEntity? // Weather
 
     init(_ dict: [String: Any]) {
         dt = dict["dt"] as? Double
-        sunrise = dict["sunrise"] as? Int
-        sunset = dict["sunset"] as? Int
+        sunrise = dict["sunrise"] as? Double
+        sunset = dict["sunset"] as? Double
         temp = dict["temp"] as? Double
         feels_like = dict["feels_like"] as? Double
         pressure = dict["pressure"] as? Double
@@ -43,7 +45,21 @@ class HourEntity: NSObject {
         wind_speed = dict["wind_speed"] as? Double
         wind_deg = dict["wind_deg"] as? Double
         wind_gust = dict["wind_gust"] as? Double
-        pop = dict["pop"] as? Double
+        if let pop = dict["rain"] as? Double {
+            self.pop = pop
+        } else {
+            pop = 0
+        }
+        if let rainDict = dict["rain"] as? [String: Double] {
+            if let h = rainDict["1h"] {
+                rain = h
+            }
+        }
+        if let snowDict = dict["snow"] as? [String: Double] {
+            if let h = snowDict["1h"] {
+                snow = h
+            }
+        }
         if let weatherArr = dict["weather"] as? [[String: Any]] {
             if let weatherDict = weatherArr.first {
                 weather = WeatherEntity.init(weatherDict)
