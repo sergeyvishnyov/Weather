@@ -32,6 +32,15 @@
                     <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                     <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </activityIndicatorView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Mh4-l8-9xL">
+                    <rect key="frame" x="0.0" y="154" width="414" height="708"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="separatorColor" systemColor="systemGroupedBackgroundColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="l8d-0E-nx3"/>
+                        <outlet property="delegate" destination="-1" id="O2B-2k-YyC"/>
+                    </connections>
+                </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mHK-vE-ClG" userLabel="Current View">
                     <rect key="frame" x="0.0" y="44" width="414" height="200"/>
                     <subviews>
@@ -108,15 +117,6 @@
                         <constraint firstAttribute="trailing" secondItem="mdD-ve-iqJ" secondAttribute="trailing" id="bg5-jo-gMd"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="120" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Mh4-l8-9xL">
-                    <rect key="frame" x="0.0" y="144" width="414" height="718"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <color key="separatorColor" systemColor="systemGroupedBackgroundColor"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="l8d-0E-nx3"/>
-                        <outlet property="delegate" destination="-1" id="O2B-2k-YyC"/>
-                    </connections>
-                </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemTealColor"/>
@@ -127,7 +127,7 @@
                 <constraint firstItem="Mh4-l8-9xL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="C2F-Si-OXn"/>
                 <constraint firstItem="MMp-lz-vxl" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="IDy-HH-sY8"/>
                 <constraint firstItem="mHK-vE-ClG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="KtQ-Rk-cMB"/>
-                <constraint firstItem="Mh4-l8-9xL" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="100" id="Psx-3B-PeE"/>
+                <constraint firstItem="Mh4-l8-9xL" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="110" id="Psx-3B-PeE"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Mh4-l8-9xL" secondAttribute="bottom" id="ac8-RY-Qap"/>
                 <constraint firstItem="MMp-lz-vxl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ul6-2o-he3"/>
             </constraints>

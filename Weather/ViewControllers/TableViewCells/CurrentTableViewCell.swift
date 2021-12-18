@@ -47,20 +47,19 @@ class CurrentTableViewCell: UITableViewCell {
         case .humdity:
             value = currentHour?.humidity?.toString().percent()
         case .wind:
-            var direction: String!
-            if let wind_deg = currentHour?.wind_deg {
-                if wind_deg > 0 && wind_deg <= 90 {
-                    direction = "East"
-                } else if wind_deg > 90 && wind_deg <= 180 {
-                    direction = "South"
-                } else if wind_deg > 180 && wind_deg <= 270 {
-                    direction = "West"
-                } else {
-                    direction = "North"
-                }
+            guard let wind_deg = currentHour?.wind_deg else { return }
+            guard let speed = currentHour?.wind_speed else { return }
+            var direction: String! = ""
+            if wind_deg > 0 && wind_deg <= 90 {
+                direction = "East"
+            } else if wind_deg > 90 && wind_deg <= 180 {
+                direction = "South"
+            } else if wind_deg > 180 && wind_deg <= 270 {
+                direction = "West"
+            } else {
+                direction = "North"
             }
-            let speed = currentHour?.wind_speed?.toString().appending(" m/s")
-            value = direction + ", " + speed!
+            value = direction + ", " + speed.toString().appending(" m/s")
         case .feels_like:
             value = currentHour?.feels_like?.toString().celsius()
         case .precipitation:

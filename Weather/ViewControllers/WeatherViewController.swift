@@ -22,8 +22,9 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet var temperatureLabel: UILabel!
 
     @IBOutlet var tableView: UITableView!
-    var tableViewCellDayHeight = 40.0
-    var tableViewCellCurrentHeight = 64.0
+    var tableViewHeaderHeight: Double! = 120.0
+    var dayTableViewCellHeight = 40.0
+    var currentTableViewCellHeight = 64.0
     let cellReuseIdentifierDay = "DayTableViewCell"
     let cellReuseIdentifierCurrent = "CurrentTableViewCell"
     let cellReuseIdentifierHour = "HourCollectionViewCell"
@@ -47,6 +48,10 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.register(UINib(nibName: cellReuseIdentifierCurrent, bundle: nil),
                                   forCellReuseIdentifier: cellReuseIdentifierCurrent)
         tableView.isHidden = true
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0.0 // remove extra padding above tableView headers in iOS 15
+        }
+
         currentView.isHidden = true
         currentViewHeightOriginal = currentView.frame.size.height
         
@@ -100,26 +105,32 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 //  MARK: - UITableView Delegate
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let hoursCollectionView = Bundle.main.loadNibNamed("HoursCollectionView",
-                                                       owner: nil,
-                                                       options: nil)?.first as! HoursCollectionView
-        hoursCollectionView.register(UINib(nibName: cellReuseIdentifierHour, bundle: nil), forCellWithReuseIdentifier: cellReuseIdentifierHour)
-        hoursCollectionView.hours = hours
-        hoursCollectionView.alpha = section == 0 ? 0 : 1
-        return hoursCollectionView
-    }
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return tableViewHeaderHeight
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 1 {
+            let hoursCollectionView = Bundle.main.loadNibNamed("HoursCollectionView",
+                                                           owner: nil,
+                                                           options: nil)?.first as! HoursCollectionView
+            hoursCollectionView.register(UINib(nibName: cellReuseIdentifierHour, bundle: nil), forCellWithReuseIdentifier: cellReuseIdentifierHour)
+            hoursCollectionView.hours = hours
+            return hoursCollectionView
+        } else {
+            return UIView.init()
+        }
+    }
+        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.row >= days.count ? tableViewCellCurrentHeight : tableViewCellDayHeight
+        return indexPath.row >= days.count ? currentTableViewCellHeight : dayTableViewCellHeight
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if days.count == 0 { return 0 }
         return section == 0 ? 1 : days.count + currentTypes.count
     }
     
@@ -145,9 +156,9 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
@@ -155,14 +166,13 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         let indexpath = IndexPath(row: 0, section: 0)
         if let currentCell = tableView.cellForRow(at: indexpath) as? DayTableViewCell {
             if offsetY > 0 {
-                let height = tableViewCellDayHeight * 2
+                let height = dayTableViewCellHeight * 2
                 temperatureView.alpha = (height - offsetY) / height
-                let alpha = (tableViewCellDayHeight - offsetY) / tableViewCellDayHeight
+                let alpha = (dayTableViewCellHeight - offsetY) / dayTableViewCellHeight
                 currentCell.alpha = alpha
             } else {
                 temperatureView.alpha = 1
                 currentCell.alpha = 1
-                
                 currentViewHeight.constant = currentViewHeightOriginal - offsetY
             }
         }

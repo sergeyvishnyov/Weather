@@ -29,9 +29,9 @@ class DayTableViewCell: UITableViewCell {
         
         if day.currentDay == false {
             dayNameLabel.text = day.dt?.toWeek()
+            dayImageView.isHidden = false
             guard let url = day.weather?.iconUrl else { return }
             dayImageView.loadImageFrom(url)
-            dayImageView.isHidden = false
         } else {
             dayNameLabel.text = day.dt?.toWeek().appending(" Today")
             dayImageView.isHidden = true
