@@ -32,7 +32,7 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sunset" translatesAutoresizingMaskIntoConstraints="NO" id="yMA-40-Tjf">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yMA-40-Tjf">
                         <rect key="frame" x="5" y="40" width="40" height="40"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -75,7 +75,4 @@
             <point key="canvasLocation" x="-36.231884057971016" y="12.723214285714285"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="sunset" width="33.333332061767578" height="33.333332061767578"/>
-    </resources>
 </document>

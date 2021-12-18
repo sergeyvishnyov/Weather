@@ -9,6 +9,7 @@ import UIKit
 import CoreLocation
 
 enum ErrorType: String {
+    case noInternetConnection = "The Internet connection appears to be offline"
     case locationDenied = "Access denied"
     case locationNotAvailable = "Location is not available"
     case errorHttpResponse = "Server Error"
@@ -45,7 +46,7 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
             let longitude = locationManager.location?.coordinate.longitude
             let location = CLLocation(latitude: latitude!,
                                       longitude: longitude!)
-            print("locations = \(String(describing: latitude)) \(String(describing: longitude))")
+            print("locations = \(String(describing: latitude?.toStringDecimal())) \(String(describing: longitude))")
             self.location = location
             locationManager.stopUpdatingLocation()
             weatherViewController?.loadData()
@@ -98,7 +99,13 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
                 }
                 success(city)
             } else {
-                self.showError(error, errorType: nil)
+                let errorCode = (error! as NSError).code
+                switch errorCode {
+                case 2:
+                    self.showError(nil, errorType: .noInternetConnection)
+                default:
+                    self.showError(error, errorType: nil)
+                }
                 failed()
             }
         })
@@ -178,16 +185,18 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
     
 //    MARK: - Errors
     func showError(_ error: Error?, errorType: ErrorType?) {
-        var errorDescription: String! = ErrorType.errorUnknown.rawValue
+        var errorDescription: String?
         if error != nil {
             errorDescription = error?.localizedDescription
         } else if errorType != nil {
             errorDescription = errorType?.rawValue
         }
-        print(errorDescription as Any)
+//        print(errorDescription as Any)
         let alert = UIAlertController(title: "Warning", message: errorDescription, preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        weatherViewController?.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.weatherViewController?.present(alert, animated: true, completion: nil)
+        }
     }
 }
 

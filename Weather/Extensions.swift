@@ -18,13 +18,30 @@ extension UIViewController {
 
 extension UIImageView {
     func loadImageFrom(_ url: URL) {
-        self.image = nil
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
+//        self.image = nil
+        
+        let fileURL = try! FileManager.default.url(for: .documentDirectory,
+                                                      in: .userDomainMask,
+                                                      appropriateFor: nil,
+                                                      create: false).appendingPathComponent(url.lastPathComponent)
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: fileURL.path) {
+            if let data = try? Data(contentsOf: fileURL) {
+                self.image = UIImage(data: data)
+            }
+        } else {
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: url) {
+                    DispatchQueue.main.async {
+                        self.image = UIImage(data: data)
+                        do {
+                            try data.write(to: fileURL, options: .atomic)
+                        } catch {
+                            print(error)
+                        }
+                    }
                 }
-            } 
+            }
         }
     }
 }
