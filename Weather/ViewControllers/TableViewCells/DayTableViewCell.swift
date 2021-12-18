@@ -23,11 +23,11 @@ class DayTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func set(_ day: DayEntity) {
+    func set(_ day: DayEntity, isToday: Bool) {
         dayTemeratureMaxLabel.text = day.tempDay?.toString()
         dayTemeratureMinLabel.text = day.tempNight?.toString()
         
-        if day.currentDay == false {
+        if isToday == false {
             dayNameLabel.text = day.dt?.toWeek()
             dayImageView.isHidden = false
             guard let url = day.weather?.iconUrl else { return }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="xuf-zu-UIh" customClass="SunCollectionViewCell" customModule="Weather" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="80" height="120"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="80" height="120"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hour" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zlP-Zu-QMC">
+                        <rect key="frame" x="0.0" y="0.0" width="80" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="aFT-6n-f5b"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sunset" translatesAutoresizingMaskIntoConstraints="NO" id="xOJ-aG-cOe">
+                        <rect key="frame" x="20" y="40" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="NJt-r7-w7E"/>
+                            <constraint firstAttribute="height" constant="40" id="UDR-Qn-4vW"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunset" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vq-P9-P0f">
+                        <rect key="frame" x="0.0" y="80" width="80" height="30"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="EKg-2e-YSd"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="W58-0q-OWS"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="zlP-Zu-QMC" secondAttribute="trailing" id="2Qi-BL-qcV"/>
+                <constraint firstItem="3vq-P9-P0f" firstAttribute="top" secondItem="xOJ-aG-cOe" secondAttribute="bottom" id="5Nu-LQ-o43"/>
+                <constraint firstItem="zlP-Zu-QMC" firstAttribute="leading" secondItem="xuf-zu-UIh" secondAttribute="leading" id="ElW-bI-YcB"/>
+                <constraint firstItem="3vq-P9-P0f" firstAttribute="leading" secondItem="xuf-zu-UIh" secondAttribute="leading" id="amE-ui-FY7"/>
+                <constraint firstItem="xOJ-aG-cOe" firstAttribute="centerX" secondItem="xuf-zu-UIh" secondAttribute="centerX" id="dPw-oY-S3J"/>
+                <constraint firstItem="zlP-Zu-QMC" firstAttribute="top" secondItem="xuf-zu-UIh" secondAttribute="top" id="gwG-aG-wfN"/>
+                <constraint firstAttribute="trailing" secondItem="3vq-P9-P0f" secondAttribute="trailing" id="rjI-vy-P7G"/>
+                <constraint firstAttribute="bottom" secondItem="3vq-P9-P0f" secondAttribute="bottom" constant="10" id="vbb-1Q-Rgn"/>
+                <constraint firstItem="xOJ-aG-cOe" firstAttribute="centerY" secondItem="xuf-zu-UIh" secondAttribute="centerY" id="z6c-Le-FV6"/>
+            </constraints>
+            <connections>
+                <outlet property="sunHourLabel" destination="zlP-Zu-QMC" id="mo5-1k-jdB"/>
+                <outlet property="sunImageView" destination="xOJ-aG-cOe" id="Ced-s9-ctS"/>
+                <outlet property="sunLabel" destination="3vq-P9-P0f" id="bAb-b7-gdM"/>
+            </connections>
+            <point key="canvasLocation" x="106" y="15"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="sunset" width="33.333332061767578" height="33.333332061767578"/>
+    </resources>
+</document>

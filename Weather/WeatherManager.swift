@@ -111,6 +111,7 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
         })
     }
     
+// https://openweathermap.org/api/one-call-api — Documentation
     func getWeather(success: @escaping(_ current: HourEntity?, _ hours: [HourEntity], _ days: [DayEntity]) -> (),
                    failed: @escaping(_ error: Any?) -> ()) {
         let lat = "&lat=\(location.coordinate.latitude)"
@@ -154,9 +155,8 @@ class WeatherManager: NSObject, CLLocationManagerDelegate {
                  if let currentDict = dict["current"] as? [String: Any] {
                      currentHour = HourEntity.init(currentDict)
                      if let hour = hours.first {
-                         // current ≈ hour, hour include Precipitation volume, mm
-                         currentHour?.rain = hour.rain
-                         currentHour?.snow = hour.snow
+                         // current ≈ hour, current exclude Precipitation volume, mm
+                         currentHour?.pop = hour.pop
                      }
                  }
 

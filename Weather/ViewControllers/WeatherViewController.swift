@@ -28,11 +28,12 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     let cellReuseIdentifierDay = "DayTableViewCell"
     let cellReuseIdentifierCurrent = "CurrentTableViewCell"
     let cellReuseIdentifierHour = "HourCollectionViewCell"
+    let cellReuseIdentifierSun = "SunCollectionViewCell"
 
     var currentHour: HourEntity?
     var hours = [HourEntity]()
     var days = [DayEntity]()
-    var currentDay: DayEntity?
+    var today: DayEntity?
 
     let currentTypes = CurrentType.allCases
     
@@ -71,13 +72,30 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         group.enter()
         manager.getWeather { current, hours, days in
-//            print(current, hours, days)
             self.currentHour = current
             self.hours = hours
-            if let firstDay = days.first {
-                self.currentDay = firstDay
-                self.currentDay?.currentDay = true
-                self.days = days
+
+            for i in 1...hours.count - 1 {
+                let hour = self.hours[i-1]
+                let nextHour = self.hours[i]
+                for day in days {
+                    if hour.dt == nil { continue }
+                    if (day.sunset)! > hour.dt! && (day.sunset)! < nextHour.dt! {
+                        let sunHour = HourEntity()
+                        sunHour.sunset = day.sunset
+                        self.hours.insert(sunHour, at: i)
+                    }
+                    if (day.sunrise)! > hour.dt! && (day.sunrise)! < nextHour.dt! {
+                        let sunHour = HourEntity()
+                        sunHour.sunrise = day.sunrise
+                        self.hours.insert(sunHour, at: i)
+                    }
+                }
+            }
+
+            self.days = days
+            if let today = days.first {
+                self.today = today
                 self.days.removeFirst()
             }
             group.leave()
@@ -119,6 +137,7 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
                                                            owner: nil,
                                                            options: nil)?.first as! HoursCollectionView
             hoursCollectionView.register(UINib(nibName: cellReuseIdentifierHour, bundle: nil), forCellWithReuseIdentifier: cellReuseIdentifierHour)
+            hoursCollectionView.register(UINib(nibName: cellReuseIdentifierSun, bundle: nil), forCellWithReuseIdentifier: cellReuseIdentifierSun)
             hoursCollectionView.hours = hours
             return hoursCollectionView
         } else {
@@ -147,10 +166,10 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
                                                bottom: 0,
                                                right: 0)
             if indexPath.section == 0 {
-                cell.set(currentDay!)
+                cell.set(today!, isToday: true)
             } else {
                 let day = days[indexPath.row]
-                cell.set(day)
+                cell.set(day, isToday: false)
             }
             return cell
         }

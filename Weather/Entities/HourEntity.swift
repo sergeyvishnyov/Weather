@@ -30,6 +30,10 @@ class HourEntity: NSObject {
 
     var weather: WeatherEntity? // Weather
 
+    override init() {
+        super.init()
+    }
+    
     init(_ dict: [String: Any]) {
         dt = dict["dt"] as? Double
         sunrise = dict["sunrise"] as? Double
@@ -45,11 +49,12 @@ class HourEntity: NSObject {
         wind_speed = dict["wind_speed"] as? Double
         wind_deg = dict["wind_deg"] as? Double
         wind_gust = dict["wind_gust"] as? Double
-        if let pop = dict["rain"] as? Double {
-            self.pop = pop
-        } else {
-            pop = 0
-        }
+        pop = dict["pop"] as? Double
+//        if let pop = dict["pop"] as? Double {
+//            self.pop = pop
+//        } else {
+//            pop = 0
+//        }
         if let rainDict = dict["rain"] as? [String: Double] {
             if let h = rainDict["1h"] {
                 rain = h

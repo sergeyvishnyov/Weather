@@ -7,8 +7,9 @@
 
 import UIKit
 
-class HoursCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource {
-    let cellReuseIdentifier = "HourCollectionViewCell"
+class HoursCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    let cellReuseIdentifierHour = "HourCollectionViewCell"
+    let cellReuseIdentifierSun = "SunCollectionViewCell"
     var hours = [HourEntity]()
 
     override func draw(_ rect: CGRect) {
@@ -31,18 +32,22 @@ class HoursCollectionView: UICollectionView, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! HourCollectionViewCell
-
-//        cell.backgroundColor = UIColor.white
-
         let hour = hours[indexPath.item]
-        cell.set(hour)
-
-        return cell
+        if hour.sunset == nil && hour.sunrise == nil {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifierHour, for: indexPath) as! HourCollectionViewCell
+            cell.set(hour)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifierSun, for: indexPath) as! SunCollectionViewCell
+            cell.set(hour)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: 220)
+        let hour = hours[indexPath.item]
+        return CGSize(width: hour.sunset == nil && hour.sunrise == nil ? 50 : 80,
+                      height: 120)
     }
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

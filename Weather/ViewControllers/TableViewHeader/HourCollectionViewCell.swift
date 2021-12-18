@@ -15,7 +15,7 @@ class HourCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backgroundColor = .clear
+        backgroundColor = .clear
     }
 
     func set(_ hour: HourEntity) {
