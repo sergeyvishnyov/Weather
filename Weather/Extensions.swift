@@ -20,19 +20,14 @@ extension UIImageView {
     func loadImageFrom(_ url: URL) {
         self.image = nil
         DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            DispatchQueue.main.async {
-                self.image = UIImage(data: data!)
-            }
+            if let data = try? Data(contentsOf: url) {
+                DispatchQueue.main.async {
+                    self.image = UIImage(data: data)
+                }
+            } 
         }
     }
 }
-
-//extension Int {
-//    func toString() -> String {
-//        return String(format: "%", self)
-//    }
-//}
 
 extension Double {
     func toString() -> String {
@@ -51,11 +46,11 @@ extension Double {
     }
     
     func toHour() -> String {
-        let dateFormatter = DateFormatter();
-        dateFormatter.dateFormat = "ha"
         if self < Date().timeIntervalSince1970  {
             return "Now"
         }
+        let dateFormatter = DateFormatter();
+        dateFormatter.dateFormat = "ha"
         return dateFormatter.string(from: Date(timeIntervalSince1970: self))
     }
 

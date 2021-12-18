@@ -30,14 +30,12 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     let cellReuseIdentifierHour = "HourCollectionViewCell"
     let cellReuseIdentifierSun = "SunCollectionViewCell"
 
+    var city: String?
+
     var currentHour: HourEntity?
     var hours = [HourEntity]()
     var days = [DayEntity]()
     var today: DayEntity?
-
-    let currentTypes = CurrentType.allCases
-    
-    var placemark: CLPlacemark?
 
     let manager: WeatherManager! = WeatherManager.sharedInstance
     
@@ -57,49 +55,36 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         currentViewHeightOriginal = currentView.frame.size.height
         
         manager.initLocationManager(self)
+        
+        if let city = UserDefaults.standard.string(forKey: "city") {
+            self.city = city
+        }
+        if let data = UserDefaults.standard.object(forKey: "data") as? Data {
+            manager.parse(data) { current, hours, days in
+                self.setData(current, hours, days)
+                self.updateUI()
+            } failed: {
+                //
+            }
+        }
     }
     
     func loadData() {
         let group = DispatchGroup()
 
         group.enter()
-        manager.getCity { placemark in
-            self.placemark = placemark
+        manager.getCity { city in
+            self.city = city
             group.leave()
-        } failed: { error in
+        } failed: {
             group.leave()
         }
         
         group.enter()
         manager.getWeather { current, hours, days in
-            self.currentHour = current
-            self.hours = hours
-
-            for i in 1...hours.count - 1 {
-                let hour = self.hours[i-1]
-                let nextHour = self.hours[i]
-                for day in days {
-                    if hour.dt == nil { continue }
-                    if (day.sunset)! > hour.dt! && (day.sunset)! < nextHour.dt! {
-                        let sunHour = HourEntity()
-                        sunHour.sunset = day.sunset
-                        self.hours.insert(sunHour, at: i)
-                    }
-                    if (day.sunrise)! > hour.dt! && (day.sunrise)! < nextHour.dt! {
-                        let sunHour = HourEntity()
-                        sunHour.sunrise = day.sunrise
-                        self.hours.insert(sunHour, at: i)
-                    }
-                }
-            }
-
-            self.days = days
-            if let today = days.first {
-                self.today = today
-                self.days.removeFirst()
-            }
+            self.setData(current, hours, days)
             group.leave()
-        } failed: { error in
+        } failed: {
             group.leave()
         }
         
@@ -110,11 +95,40 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func setData(_ current: HourEntity?, _ hours: [HourEntity], _ days: [DayEntity]) {
+        self.currentHour = current
+        self.hours = hours
+
+        for i in 1...hours.count - 1 { // add sunset and sunrise to hours array
+            let hour = self.hours[i-1]
+            let nextHour = self.hours[i]
+            for day in days {
+                if hour.dt == nil { continue }
+                if (day.sunset)! > hour.dt! && (day.sunset)! < nextHour.dt! {
+                    let sunHour = HourEntity()
+                    sunHour.sunset = day.sunset
+                    self.hours.insert(sunHour, at: i)
+                }
+                if (day.sunrise)! > hour.dt! && (day.sunrise)! < nextHour.dt! {
+                    let sunHour = HourEntity()
+                    sunHour.sunrise = day.sunrise
+                    self.hours.insert(sunHour, at: i)
+                }
+            }
+        }
+
+        self.days = days
+        if let today = days.first {
+            self.today = today
+            self.days.removeFirst()
+        }
+    }
+    
     func updateUI () {
         activityIndicatorView.stopAnimating()
         
         currentView.isHidden = false
-        cityLabel.text = placemark?.locality ?? placemark?.name
+        cityLabel.text = city
         weatherLabel.text = currentHour?.weather?.weatherDescription
         temperatureLabel.text = currentHour?.temp?.toString()
 
@@ -150,13 +164,13 @@ class WeatherViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 1 : days.count + currentTypes.count
+        return section == 0 ? 1 : days.count + CurrentType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row >= days.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifierCurrent) as! CurrentTableViewCell
-            let currentType = currentTypes[indexPath.row - days.count]
+            let currentType = CurrentType.allCases[indexPath.row - days.count]
             cell.set(currentType, currentHour)
             return cell
         } else {

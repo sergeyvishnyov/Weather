@@ -87,13 +87,21 @@
 				A5127B0D276A2ED3006806DE /* Assets.xcassets */,
 				A5127B04276A2ED0006806DE /* AppDelegate.swift */,
 				A5127B1A276A31BF006806DE /* Extensions.swift */,
-				A5E80AFF276B503A00975C1B /* WeatherManager.swift */,
 				A5E80B01276BAF6C00975C1B /* ViewControllers */,
-				A5E80B03276BAF9C00975C1B /* Entities */,
+				A5A7B490276E275700252496 /* API */,
 				A5127B0F276A2ED3006806DE /* LaunchScreen.storyboard */,
 				A5127B12276A2ED3006806DE /* Info.plist */,
 			);
 			path = Weather;
+			sourceTree = "<group>";
+		};
+		A5A7B490276E275700252496 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A5E80AFF276B503A00975C1B /* WeatherManager.swift */,
+				A5E80B03276BAF9C00975C1B /* Entities */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		A5E80B01276BAF6C00975C1B /* ViewControllers */ = {
@@ -115,7 +123,7 @@
 				A5E80AFB276B43AB00975C1B /* Weather.swift */,
 			);
 			name = Entities;
-			path = Weather/Entities;
+			path = Weather/API/Entities;
 			sourceTree = SOURCE_ROOT;
 		};
 		A5E80B40276BB39600975C1B /* TableViewCells */ = {

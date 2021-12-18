@@ -36,52 +36,54 @@ class CurrentTableViewCell: UITableViewCell {
     
     func set(_ currentType: CurrentType, _ currentHour: HourEntity?) {
         keyLabel.text = currentType.rawValue
-        var value: String?
-        switch currentType {
-        case .sunrize:
-            value = currentHour?.sunrise?.toHourMinute()
-        case .sunset:
-            value = currentHour?.sunset?.toHourMinute()
-        case .pop:
-            value = currentHour?.pop?.toString().percent()
-        case .humdity:
-            value = currentHour?.humidity?.toString().percent()
-        case .wind:
-            guard let wind_deg = currentHour?.wind_deg else { return }
-            guard let speed = currentHour?.wind_speed else { return }
-            var direction: String! = ""
-            if wind_deg > 0 && wind_deg <= 90 {
-                direction = "East"
-            } else if wind_deg > 90 && wind_deg <= 180 {
-                direction = "South"
-            } else if wind_deg > 180 && wind_deg <= 270 {
-                direction = "West"
-            } else {
-                direction = "North"
+        if let hour = currentHour {
+            var value: String?
+            switch currentType {
+            case .sunrize:
+                value = hour.sunrise?.toHourMinute()
+            case .sunset:
+                value = hour.sunset?.toHourMinute()
+            case .pop:
+                value = (hour.pop! * 100).toString().percent()
+            case .humdity:
+                value = hour.humidity?.toString().percent()
+            case .wind:
+                guard let wind_deg = hour.wind_deg else { return }
+                guard let speed = hour.wind_speed else { return }
+                var direction: String! = ""
+                if wind_deg > 0 && wind_deg <= 90 {
+                    direction = "East"
+                } else if wind_deg > 90 && wind_deg <= 180 {
+                    direction = "South"
+                } else if wind_deg > 180 && wind_deg <= 270 {
+                    direction = "West"
+                } else {
+                    direction = "North"
+                }
+                value = direction + ", " + speed.toString().appending(" m/s")
+            case .feels_like:
+                value = hour.feels_like?.toString().celsius()
+            case .precipitation:
+                value = "0 mm"
+                if let rain = hour.rain {
+                    value = rain.toStringDecimal().appending(" mm")
+                } else if let snow = hour.snow {
+                    value = snow.toStringDecimal().appending(" mm")
+                }
+            case .pressure:
+                if let pressure = hour.pressure {
+                    value = pressure.toString().appending(" hPa")
+                    value = value?.appending(", \(Int(pressure * 0.75006)) mmHg") // hPa to mmHg
+                }
+            case .visibility:
+                if let visibility = hour.visibility {
+    //                value = visibility.toString().appending(" metres")
+                    value = (visibility / 1000.0).toStringDecimal().appending(" km")
+                }
+            case .uv_index:
+                value = hour.uvi?.toString()
             }
-            value = direction + ", " + speed.toString().appending(" m/s")
-        case .feels_like:
-            value = currentHour?.feels_like?.toString().celsius()
-        case .precipitation:
-            value = "0 mm"
-            if let rain = currentHour?.rain {
-                value = rain.toStringDecimal().appending(" mm")
-            } else if let snow = currentHour?.snow {
-                value = snow.toStringDecimal().appending(" mm")
-            }
-        case .pressure:
-            if let pressure = currentHour?.pressure {
-                value = pressure.toString().appending(" hPa")
-                value = value?.appending(", \(Int(pressure * 0.75006)) mmHg") // hPa to mmHg
-            }
-        case .visibility:
-            if let visibility = currentHour?.visibility {
-//                value = visibility.toString().appending(" metres")
-                value = (visibility / 1000.0).toString().appending(" km")
-            }
-        case .uv_index:
-            value = currentHour?.uvi?.toString()
+            valueLabel.text = value
         }
-        valueLabel.text = value
     }
 }
